@@ -12,7 +12,7 @@ if [[ -z $USER_EXISTS ]]
 then
   # New user
   echo "Welcome, $USERNAME! It looks like this is your first time here."
-  $PSQL "INSERT INTO user_data(username, games_played, best_game) VALUES('$USERNAME', 0, 0)"
+  INSERT_NEW_USER=$($PSQL "INSERT INTO user_data(username, games_played, best_game) VALUES('$USERNAME', 0, 0)")
 else
   # Get user stats
   GAMES_PLAYED=$($PSQL "SELECT games_played FROM user_data WHERE username='$USERNAME'")
@@ -60,10 +60,10 @@ done
 echo "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
 
 # Update user stats
-$PSQL "UPDATE user_data SET games_played = games_played + 1 WHERE username='$USERNAME'"
+UPDATE_USER-STATS=$($PSQL "UPDATE user_data SET games_played = games_played + 1 WHERE username='$USERNAME'")
 
 # Update best game if necessary
 if [[ $BEST_GAME -eq 0 || $NUMBER_OF_GUESSES -lt $BEST_GAME ]]
 then
-  $PSQL "UPDATE user_data SET best_game = $NUMBER_OF_GUESSES WHERE username='$USERNAME'"
+  UPDATE_STATS=$($PSQL "UPDATE user_data SET best_game = $NUMBER_OF_GUESSES WHERE username='$USERNAME'")
 fi
